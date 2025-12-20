@@ -2,13 +2,13 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
 
 export default function App() {
   return (
     <Provider store={store}>
       <Header />
-      <Home />
+      <SignIn />
       <Footer />
     </Provider>
   );
