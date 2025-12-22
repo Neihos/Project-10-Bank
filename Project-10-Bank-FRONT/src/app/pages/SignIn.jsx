@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setToken } from "../store/authSlice";
+
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,7 +29,7 @@ export default function SignIn() {
       }
 
       const token = json.body.token;
-      console.log("JWT TOKEN:", token);
+      dispatch(setToken(token));
       navigate("/profile");
     } catch (err) {
       console.log("Network/API error :", err);
