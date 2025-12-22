@@ -1,8 +1,35 @@
+import { useNavigate } from "react-router-dom";
+
 export default function SignIn() {
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("submit");
-    };
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData(e.currentTarget);
+    const email = data.get("email");
+    const password = data.get("password");
+
+    try {
+      const res = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.log("Login failed : ", json.message);
+        return;
+      }
+
+      const token = json.body.token;
+      console.log("JWT TOKEN:", token);
+      navigate("/profile");
+    } catch (err) {
+      console.log("Network/API error :", err);
+    }
+  };
 
   return (
     <main className="main bg-dark">
@@ -11,8 +38,8 @@ export default function SignIn() {
         <h1>Sign In</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="username">Username</label>
-            <input type="text" id="username" name="username" />
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" />
           </div>
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
