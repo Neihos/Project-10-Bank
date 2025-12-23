@@ -52,8 +52,15 @@ body {
 }
 
 .main-nav-item {
+  display: flex;
+  align-items: center;
   text-decoration: none;
   margin-right: 0.5rem;
+  gap: 10px;
+}
+
+.main-nav-item .fa-sign-out {
+  font-size: 25px;
 }
 
 .main-nav-item:hover {
