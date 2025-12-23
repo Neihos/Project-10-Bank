@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 export default function User() {
   const token = useSelector((state) => state.auth.token);
   const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -23,6 +26,8 @@ export default function User() {
         }
 
         setUser(json.body);
+        setFirstName(json.body.firstName);
+        setLastName(json.body.lastName);
       } catch (err) {
         console.log("API error:", err);
       }
@@ -33,6 +38,35 @@ export default function User() {
     }
   }, [token]);
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.log("Update failed:", json.message);
+        return;
+      }
+
+      setUser(json.body);
+      setIsEditing(false);
+    } catch (err) {
+      console.log("Update API error:", err);
+    }
+  };
 
   return (
     <main className="main bg-dark">
@@ -40,11 +74,52 @@ export default function User() {
         <h1>
           Welcome back
           <br />
-          {user ? `${user.firstName} ${user.lastName}` : ""}
+          {!isEditing && user ? `${user.firstName} ${user.lastName}` : ""}
         </h1>
-        <button className="edit-button">Edit Name</button>
+
+        {!isEditing ? (
+          <button className="edit-button" onClick={() => setIsEditing(true)}>
+            Edit Name
+          </button>
+        ) : (
+          <form onSubmit={handleSave}>
+            <div className="edit-inputs">
+              <input
+                id="firstName"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                id="lastName"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+
+            <div className="edit-actions">
+              <button type="submit" className="edit-button">
+                Save
+              </button>
+              <button
+                type="button"
+                className="edit-button"
+                onClick={() => {
+                  setIsEditing(false);
+                  setFirstName(user.firstName);
+                  setLastName(user.lastName);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
       </div>
+
       <h2 className="sr-only">Accounts</h2>
+
       <section className="account">
         <div className="account-content-wrapper">
           <h3 className="account-title">Argent Bank Checking (x8349)</h3>
