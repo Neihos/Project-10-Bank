@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setFirstName as setFirstNameAction } from "../store/authSlice";
 
 export default function User() {
   const token = useSelector((state) => state.auth.token);
@@ -7,6 +9,7 @@ export default function User() {
   const [isEditing, setIsEditing] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -25,6 +28,7 @@ export default function User() {
           return;
         }
 
+        dispatch(setFirstNameAction(json.body.firstName));
         setUser(json.body);
         setFirstName(json.body.firstName);
         setLastName(json.body.lastName);
@@ -61,6 +65,7 @@ export default function User() {
         return;
       }
 
+      dispatch(setFirstNameAction(json.body.firstName));
       setUser(json.body);
       setIsEditing(false);
     } catch (err) {

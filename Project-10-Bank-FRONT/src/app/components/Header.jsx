@@ -6,7 +6,9 @@ import { logout } from "../store/authSlice";
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const token = useSelector((state) => state.auth.token);
+  const firstName = useSelector((state) => state.auth.firstName);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -23,22 +25,29 @@ export default function Header() {
         />
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
-      <div>
+
+      <div className="main-nav-login-container">
         {!token ? (
           <Link to="/login" className="main-nav-item">
             <i className="fa fa-user-circle"></i>
             Sign In
           </Link>
         ) : (
-          <button
-            type="button"
-            className="main-nav-item"
-            onClick={handleLogout}
-            style={{ background: "none", border: "none", cursor: "pointer" }}
-          >
-            <i className="fa fa-sign-out"></i>
-            Sign Out
-          </button>
+          <>
+            <Link to="/profile" className="main-nav-item">
+              <i className="fa fa-user-circle"></i>
+              {firstName}
+            </Link>
+
+            <button
+              type="button"
+              className="main-nav-item"
+              onClick={handleLogout}
+            >
+              <i className="fa fa-sign-out"></i>
+              Sign Out
+            </button>
+          </>
         )}
       </div>
     </nav>

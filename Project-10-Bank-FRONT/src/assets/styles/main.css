@@ -54,12 +54,18 @@ body {
   color: #42b983;
 }
 
+.main-nav-login-container {
+  display: flex;
+}
+
 .main-nav-item {
   display: flex;
   align-items: center;
   text-decoration: none;
   margin-right: 0.5rem;
   gap: 10px;
+  border: none;
+  background-color: transparent;
 }
 
 .main-nav-item .fa-sign-out {
