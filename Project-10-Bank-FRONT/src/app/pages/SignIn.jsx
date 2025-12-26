@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { setToken } from "../store/authSlice";
-
 
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const data = new FormData(e.currentTarget);
     const email = data.get("email");
@@ -24,7 +26,7 @@ export default function SignIn() {
       const json = await res.json();
 
       if (!res.ok) {
-        console.log("Login failed : ", json.message);
+        setError(json.message || "Invalid email or password");
         return;
       }
 
@@ -54,6 +56,7 @@ export default function SignIn() {
             <input type="checkbox" id="remember-me" name="rememberMe" />
             <label htmlFor="remember-me">Remember me</label>
           </div>
+          {error && <p className="error">{error}</p>}
           <button type="submit" className="sign-in-button">
             Sign In
           </button>

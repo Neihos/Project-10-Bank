@@ -123,6 +123,12 @@ body {
   width: 150px;
 }
 
+.error {
+  color: #ff4d4f;
+  margin: 10px 0;
+}
+
+
 @media (min-width: 920px) {
   .hero {
     height: 400px;
