@@ -29,6 +29,7 @@ export default function User() {
         }
 
         dispatch(setFirstNameAction(json.body.firstName));
+        localStorage.setItem("firstName", json.body.firstName);
         setUser(json.body);
         setFirstName(json.body.firstName);
         setLastName(json.body.lastName);
@@ -40,7 +41,7 @@ export default function User() {
     if (token) {
       fetchProfile();
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -66,6 +67,7 @@ export default function User() {
       }
 
       dispatch(setFirstNameAction(json.body.firstName));
+      localStorage.setItem("firstName", json.body.firstName);
       setUser(json.body);
       setIsEditing(false);
     } catch (err) {

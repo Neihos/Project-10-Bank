@@ -31,6 +31,7 @@ export default function SignIn() {
       }
 
       const token = json.body.token;
+      localStorage.setItem("token", token);
       dispatch(setToken(token));
       navigate("/profile");
     } catch (err) {

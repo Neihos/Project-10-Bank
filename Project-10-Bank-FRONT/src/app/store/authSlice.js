@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  token: null,
-  firstName: null,
+  token: localStorage.getItem("token"),
+  firstName: localStorage.getItem("firstName"),
 };
 
 const authSlice = createSlice({
@@ -14,6 +14,9 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.token = null;
+      state.firstName = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("firstName");
     },
     setFirstName(state, action) {
       state.firstName = action.payload;
